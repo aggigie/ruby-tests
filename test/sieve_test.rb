@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative 'sieve'
+require_relative '../lib/sieve'
 
 # Common test data version: 1.1.0 8bbb634
 class SieveTest < Minitest::Test

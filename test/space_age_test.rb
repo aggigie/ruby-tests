@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative 'space_age'
+require_relative '../lib/space_age'
 
 # Common test data version: 1.1.0 8d4df79
 class SpaceAgeTest < Minitest::Test

@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative 'queen_attack'
+require_relative '../lib/queen_attack'
 
 # Common test data version: 2.2.0 aaadbac
 class QueenAttackTest < Minitest::Test

@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative 'allergies'
+require_relative '../lib/allergies'
 
 # Common test data version: 1.2.0 17a2ab2
 class AllergiesTest < Minitest::Test
