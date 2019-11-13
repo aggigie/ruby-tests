@@ -6,48 +6,25 @@ class Grep
     @@match_whole_line = '-x'
     def self.grep(pattern, flags, files)
         regex_pattern = prepare_regexp(pattern, flags)
-        files_amount = files.length
+        files_amount = files.length > 1
         final_output = ""
         files.each.with_index { |filename, file_nr|
-            output = ""
-            matches = 0
             File.foreach(filename).with_index { |line, index| 
-                is_match = line.match(regex_pattern)
-                if is_match && !(flags.include? @@invert)
-                    if matches > 0 
-                        output += "\n"
+                is_match = line.match(regex_pattern).nil? == flags.include?(@@invert)
+                if is_match 
+                    output_line = []
+                    output_line << filename if (files_amount || flags.include?(@@output_filename))
+                    output_line << (index + 1).to_s if ((flags.include?(@@line_num)) && !(flags.include?(@@output_filename)))
+                    output_line << line unless flags.include?(@@output_filename)
+                    final_output << output_line.join(":")
+                    if flags.include?(@@output_filename)
+                        final_output << "\n"
+                        break
                     end
-                    output += prepare_line(line, index, flags, filename, files_amount)
-                    matches += 1
-                elsif !is_match && (flags.include? @@invert)
-                    if flags.include? @@invert
-                        if matches > 0 
-                            output += "\n"
-                        end
-                        output += prepare_line(line, index, flags, filename, files_amount)
-                        matches += 1
-                    end 
                 end
             }
-            output = prepare_output(output, flags, files, file_nr, matches)
-            if output != ""
-                final_output += "#{output}\n"
-            end
         }
-        return final_output.chomp
-    end
-
-    def self.prepare_line(line, index, flags, filename, files_amount)
-        x = ""
-        if flags.include? @@line_num
-            x = "#{index+1}:#{line.strip}"
-        else
-            x = "#{line.strip}"
-        end
-        if files_amount > 1 
-            x = "#{filename}:#{x}"
-        end
-        return x
+        return final_output.rstrip
     end
 
     def self.prepare_regexp(pattern, flags)
@@ -62,15 +39,8 @@ class Grep
         else
             regex_pattern = Regexp.new pattern
         end
-    end
-
-    def self.prepare_output(current_output, flags, files, file_nr, matches)
-        if(flags.include? @@output_filename)
-            current_output = ""
-            if matches > 0
-                current_output += "#{files[file_nr]}"
-            end
-        end
-        return current_output
-    end
+    end 
 end
+
+
+
