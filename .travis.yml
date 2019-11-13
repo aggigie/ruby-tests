@@ -1,0 +1,11 @@
+language: ruby
+rvm:
+ - 2.3.8
+ - 2.5.1
+ - 2.6.2
+before_install:
+- gem update --system
+- gem install bundler
+notifications:
+- false
+bundler_args: --without production
