@@ -5,7 +5,7 @@ RSpec.describe Clock do
   expect(Clock.new(:hour => 8).to_s).to(eq('08:00'))
   end
   it 'past the hour' do
-    expect(Clock.new(:hour => 11, :minute => 9).to_s).to(eq ('11:99'))
+    expect(Clock.new(:hour => 11, :minute => 9).to_s).to(eq ('11:09'))
   end
   it 'midnight is zero hours' do
     expect(Clock.new(:hour => 24).to_s).to(eq ('00:00'))
